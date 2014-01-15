@@ -143,7 +143,9 @@ class WP_Stream_Connector_Installer extends WP_Stream_Connector {
 		$context = $type . 's';
 
 		// If not doing bulk, simulate one to trigger a log operation
-		if ( ! $logs ) $logs[] = array();
+		if ( ! $logs ) {
+			$logs[] = array();
+		}
 
 		foreach ( $logs as $log ) {
 			extract( $log );

@@ -173,7 +173,6 @@ class WP_Stream_Connector_Widgets extends WP_Stream_Connector {
 	 * @return array
 	 */
 	public static function callback_widget_update_callback( $instance, $new_instance, $old_instance, $widget ) {
-		global $wp_registered_sidebars;
 
 		$id_base   = $widget->id_base;
 		$widget_id = $widget->id;
@@ -201,7 +200,7 @@ class WP_Stream_Connector_Widgets extends WP_Stream_Connector {
 	 * @return void
 	 */
 	public static function callback_wp_ajax_widgets_order() {
-		global $wp_registered_sidebars, $wp_registered_widgets, $sidebars_widgets, $order_operation;
+		global $wp_registered_sidebars, $order_operation;
 
 		// If this was a widget update, skip adding a new record
 		if ( did_action( 'widget_update_callback' ) ) {
@@ -212,7 +211,9 @@ class WP_Stream_Connector_Widgets extends WP_Stream_Connector {
 		unset( $old['array_version'] );
 		$new = $_POST['sidebars'];
 		foreach ( $new as $sidebar_id => $widget_ids ) {
-			if ( $sidebar_id == 'wp_inactive_widgets' ) continue;
+			if ( $sidebar_id == 'wp_inactive_widgets' ) {
+				continue;
+			}
 
 			$widget_ids = preg_replace( '#(widget-\d+_)#', '', $widget_ids );
 			$new[$sidebar_id] = array_filter( explode( ',', $widget_ids ) );
@@ -249,14 +250,13 @@ class WP_Stream_Connector_Widgets extends WP_Stream_Connector {
 	 * @return array             array( $id_base, $name, $title, $sidebar, $sidebar_name, $widget_class )
 	 */
 	public static function get_widget_info( $id, $sidebars = array() ) {
-		global $wp_registered_widgets, $wp_widget_factory, $wp_registered_sidebars;
+		global $wp_widget_factory, $wp_registered_sidebars;
 		$ids = array_combine(
 			wp_list_pluck( $wp_widget_factory->widgets, 'id_base' ),
 			array_keys( $wp_widget_factory->widgets )
 		);
 
 		$id_base = preg_match( '#(.*)-(\d+)$#', $id, $matches ) ? $matches[1] : null;
-		$number  = $matches[2];
 		$name    = $wp_widget_factory->widgets[ $ids[$id_base] ]->name;
 
 		$settings = self::get_widget_settings( $id );
@@ -285,7 +285,7 @@ class WP_Stream_Connector_Widgets extends WP_Stream_Connector {
 	 * @return array       Widget instance
 	 */
 	public static function get_widget_settings( $id ) {
-		global $wp_widget_factory, $wp_registered_widgets, $wp_widget_factory, $wp_registered_sidebars;
+		global $wp_widget_factory, $wp_widget_factory;
 
 		$id_base = preg_match( '#(.*)-(\d+)#', $id, $matches ) ? $matches[1] : null;
 		$number  = $matches[2];

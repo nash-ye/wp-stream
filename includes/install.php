@@ -6,7 +6,7 @@ class WP_Stream_Install {
 
 	/**
 	 * Check db version, create/update table schema accordingly
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function check() {
@@ -43,7 +43,6 @@ class WP_Stream_Install {
 	}
 
 	public static function install() {
-		global $wpdb;
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		$prefix = self::$table_prefix;

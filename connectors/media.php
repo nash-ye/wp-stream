@@ -91,7 +91,9 @@ class WP_Stream_Connector_Media extends WP_Stream_Connector {
 		$name      = $post->post_title;
 		$url       = $post->guid;
 		$parent_id = $post->post_parent;
-		if ( $parent_id && $parent = get_post( $post->post_parent ) ) $parent_title = $parent->post_title;
+		if ( $parent_id && $parent = get_post( $post->post_parent ) ) {
+			$parent_title = $parent->post_title;
+		}
 
 		self::log(
 			$message,
@@ -127,7 +129,9 @@ class WP_Stream_Connector_Media extends WP_Stream_Connector {
 	public static function callback_delete_attachment( $post_id ) {
 		$post   = get_post( $post_id );
 		$parent = $post->post_parent ? get_post( $post->post_parent ) : null;
-		if ( $parent ) $parent_id = $parent->ID;
+		if ( $parent ) {
+			$parent_id = $parent->ID;
+		}
 		$message = __( 'Deleted "%s"', 'stream' );
 		$name    = $post->post_title;
 		$url     = $post->guid;
